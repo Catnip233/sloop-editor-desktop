@@ -43,7 +43,7 @@ function createWindow() {
     show: Boolean(smokeOutput),
     autoHideMenuBar: true,
     backgroundColor: "#070707",
-    icon: path.join(__dirname, "app", "sloop-icon.ico"),
+    icon: path.join(__dirname, "app", process.platform === "win32" ? "sloop-icon.ico" : "sloop-icon.png"),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,

@@ -9,7 +9,8 @@
   "scripts": {
     "check": "node --check main.cjs",
     "start": "electron .",
-    "dist": "electron-builder --win nsis portable --x64"
+    "dist": "electron-builder --win nsis portable --x64",
+    "dist:mac": "electron-builder --mac dmg zip"
   },
   "devDependencies": {
     "electron": "^44.7.0",
@@ -44,6 +45,15 @@
           ]
         }
       ]
+    },
+    "mac": {
+      "icon": "app/sloop-icon.png",
+      "category": "public.app-category.music",
+      "identity": "-",
+      "hardenedRuntime": false,
+      "notarize": false,
+      "target": ["dmg", "zip"],
+      "artifactName": "SLOOP-Editor-${version}-mac-${arch}.${ext}"
     },
     "nsis": {
       "artifactName": "SLOOP-Editor-${version}-${arch}-Setup.${ext}",
