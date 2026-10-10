@@ -1,0 +1,34 @@
+name: Publish Mac packages to Release
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful build workflow run ID
+        required: true
+        default: '38062184463'
+      tag:
+        description: Existing release tag
+        required: true
+        default: 'v2.5.0'
+permissions:
+  actions: read
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      BUILD_RUN: ${{ inputs.run_id }}
+      RELEASE_TAG: ${{ inputs.tag }}
+    steps:
+      - name: Download successful Mac build artifacts
+        run: |
+          gh run download "$BUILD_RUN" --name SLOOP-Editor-mac-arm64 --name SLOOP-Editor-mac-x64 --dir packages
+      - name: Upload Mac installers and archives
+        run: |
+          mapfile -d '' files < <(find packages -type f \( -name '*.dmg' -o -name '*.zip' \) -print0)
+          test "${#files[@]}" -eq 4
+          gh release upload "$RELEASE_TAG" "${files[@]}"
+      - name: Verify release assets
+        run: gh release view "$RELEASE_TAG" --json assets --jq '.assets[] | {name,size,state}'
