@@ -1,0 +1,58 @@
+{
+  "name": "sloop-editor-desktop",
+  "version": "2.5.0",
+  "description": "Offline Windows desktop wrapper for the SLOOP FM-1 web editor",
+  "main": "main.cjs",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "author": "SLOOP contributors",
+  "scripts": {
+    "check": "node --check main.cjs",
+    "start": "electron .",
+    "dist": "electron-builder --win nsis portable --x64"
+  },
+  "devDependencies": {
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "io.github.isod89.sloop.editor",
+    "productName": "SLOOP Editor",
+    "copyright": "Copyright SLOOP contributors",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.cjs",
+      "app/**/*",
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md"
+    ],
+    "win": {
+      "icon": "app/sloop-icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "artifactName": "SLOOP-Editor-${version}-${arch}-Setup.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SLOOP Editor"
+    },
+    "portable": { "artifactName": "SLOOP-Editor-${version}-${arch}-Portable.${ext}" }
+  }
+}
